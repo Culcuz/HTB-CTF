@@ -1,0 +1,22 @@
+Tramite le info dell'immagine vedo che l'autore è una password.
+Th15_15_th3_p455w0rD
+
+└─$ binwalk pepo.jpg  
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             JPEG image data, JFIF standard 1.01
+30            0x1E            TIFF image data, big-endian, offset of first image directory: 8
+7173          0x1C05          Zip archive data, encrypted at least v2.0 to extract, compressed size: 36, uncompressed size: 24, name: flag.txt
+7337          0x1CA9          End of Zip archive, footer length: 22
+
+vedo un doppio header di cui uno è un archivio zip
+└─$ unzip pepo.jpg
+Archive:  pepo.jpg
+warning [pepo.jpg]:  7173 extra bytes at beginning or within zipfile
+  (attempting to process anyway)
+[pepo.jpg] flag.txt password: 
+ extracting: flag.txt
+
+└─$ cat flag.txt
+CYBRGN{H1d3_L1k3_4_B055}    
+
