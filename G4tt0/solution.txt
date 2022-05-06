@@ -1,0 +1,6 @@
+Wireshark
+Vedo scambio pacchetti HTTP con una immagine Gatto.jpeg
+File -> Esporta oggetti -> HTTP
+Cerco immagine Gatto.jpeg
+Visualizzo antemprima
+flag{C4ts4r3Cut3}
