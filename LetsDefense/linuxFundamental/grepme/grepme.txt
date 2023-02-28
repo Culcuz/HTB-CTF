@@ -1,0 +1,1 @@
+UFW (Uncomplicated Firewall) is a firewall tool that allows us to perform port and firewall operations on both the console and GUI (graphical interface). It comes installed in Linux systems but must be activated. It performs operations just like other firewall software. When analyzing Linux systems, Linux firewall logs should be examined.

@@ -1,0 +1,48 @@
+Delivered-To: krystyalia@gmail.com
+Received: by 2002:a59:ce05:0:b0:2d3:3de5:67a9 with SMTP id l5csp1310935vqx;
+        Mon, 15 Aug 2022 07:35:02 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR5km6ywOzoBtEq9clYbBp8qJUgwZjl3vP31rmyn3ReGCZe7C1UBuWHBbIZLS4vvQF7qIUqB
+X-Received: by 2002:a92:c543:0:b0:2e4:c514:4ad8 with SMTP id a3-20020a92c543000000b002e4c5144ad8mr5344852ilj.301.1660574102289;
+        Mon, 15 Aug 2022 07:35:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1660574102; cv=none;
+        d=google.com; s=arc-20160816;
+        b=v0vRI/Pfq0mG8+kEolqxZIG0U7TAEObvlwr8ILnGJSKrCr+0gwGjNTLTuLDOKuQSYL
+         +0KATfrRyeS+S4J4EaV+9n/ctMKNKFGu4213iyMaCSuzaF7XBEwFe0scYp4r6QbeFKjp
+         DVgAnm8CQubLm9+DOk1jlnLmoqfDRIUB+tC3QS8VWVOOtNo1jF7lPhJTV5WoSW3uHDhL
+         cNHj70daaMitn5LQwqY3u3h/XhQR9f0pLWGPqeaM/8OSAyaU8aIlxpNMVL7EiltQgsew
+         6o7lgKjzOkn+g+5jEWGPRjWFjwJTmudTN4yTHOQhB5hFRGbrvv0m0FNN/lR9HuqpeKH3
+         7f8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=feedback-id:message-id:to:subject:envelope-to:list-unsubscribe:from
+         :date;
+        bh=RBOWoaMMpae2XSW5fIY8AMWesjkkUGv9NVPbU5akMiw=;
+        b=qEx4Dby+KeEbwFfEkyTOLalZdP2Bi/1x++tzApl5zqJPEO+/yhr49+kFUAOLs6YejZ
+         5GVU8PA4yOTHHBDuLmYr6tGRNNdbohZIT7G6rz+hV1uU8bNmoUTzVXoTzWUSZKUappHH
+         WnfmvEJzQvlPvdPPgwA2/5a4HKxeCLX+Pa/YJ0wUfeXrDwHBDiHmG2hpG2h2n07BkWYk
+         CVhDnFFhQ8tDO6dS371kOBeYBcseystA3+1SoBs6M6qZbEPPXzNXkyFqN6NuoeCmNn3d
+         moGUHjeXaGD3W1kY+qjvUywVULouHPSK0F578CTgg1/DSdm7UGYnJyMYlyrbA9EBXa5H
+         Mm1Q==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of bounce@rjttznyzjjzydnillquh.designclub.uk.com designates 134.195.196.43 as permitted sender) smtp.mailfrom=bounce@rjttznyzjjzydnillquh.designclub.uk.com
+Return-Path: <bounce@rjttznyzjjzydnillquh.designclub.uk.com>
+Received: from foresthillrestaurant.com (capchrist.org. [134.195.196.43])
+        by mx.google.com with ESMTP id v19-20020a056638251300b00343383b93c1si6702219jat.13.2022.08.15.07.35.01
+        for <krystyalia@gmail.com>;
+        Mon, 15 Aug 2022 07:35:02 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounce@rjttznyzjjzydnillquh.designclub.uk.com designates 134.195.196.43 as permitted sender) client-ip=134.195.196.43;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of bounce@rjttznyzjjzydnillquh.designclub.uk.com designates 134.195.196.43 as permitted sender) smtp.mailfrom=bounce@rjttznyzjjzydnillquh.designclub.uk.com
+Received: from efianalytics.com (efianalytics.com. 216.244.76.116)
+Date: Mon, 15 Aug 2022 10:35:01 -0400 (EDT)
+From:  "â˜†P.A.Y.P.A.Lâ˜†"  <IHKH0MFEWW@kodehexa.net>
+X-EMMAIL: Marrybenh@kodehexa.net
+List-Unsubscribe: <mailto:<6kb5309jhvfamn7t0kt-iyct34ecfud7rfs3owh5d355dzxhy5.ljdg2j.quk3tu.9@unsub-sj.mktomail.com>
+Envelope-To: <krystyalia@gmail.com>
+Subject:  ðŸ“© ð–ð¢ð« ð¡ðšð›ðžð§ ð’ð¢ðž ðšð§ð ðžð«ð®ðŸðžð§, ð’ð¢ðž ð¡ðšð›ðžð§ ð§ð¢ðœð¡ð­ ð ðžðšð§ð­ð°ð¨ð«ð­ðžð­_______________0759338487
+To: <[an18]@itlgopk.uk>
+Message-Id: <-@vevida.net>
+X-MarketoID: vKD-Gha-mqeegooa:0:jJKk4V:9:oB3EVd:besLKX8VE
+Feedback-ID: 1.us-east-1.psHyoMfnH8hkuQnF72JGzzQK1By9IkayShm7uIk1GIc=:AmazonSES
+X-PVIQ: mkto-RdMCgBVWW-NB6yqY-hZCeCx-FdLezk
+Content-Type: multipart/report; boundary="000000000000SGCNuB7Qm6umj710elBSQB"; report-type=delivery-status
+

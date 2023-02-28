@@ -1,0 +1,92 @@
+systemd-+-ModemManager---2*[{ModemManager}]
+        |-NetworkManager-+-dhclient
+        |                `-2*[{NetworkManager}]
+        |-accounts-daemon---2*[{accounts-daemon}]
+        |-alsactl
+        |-apache2---2*[apache2---26*[{apache2}]]
+        |-avahi-daemon---avahi-daemon
+        |-colord---2*[{colord}]
+        |-cron
+        |-dbus-daemon
+        |-dockerd-+-docker-containe---17*[{docker-containe}]
+        |         `-15*[{dockerd}]
+        |-fwupd---4*[{fwupd}]
+        |-gdm3-+-gdm-session-wor-+-gdm-wayland-ses-+-gnome-session-b-+-evolution-alarm---5*[{evolution-alarm}]
+        |      |                 |                 |                 |-gnome-shell-+-Xwayland---4*[{Xwayland}]
+        |      |                 |                 |                 |             |-firefox-esr-+-Privileged Cont---24*[{Privilege+
+        |      |                 |                 |                 |             |             |-Web Content---24*[{Web Content}]
+        |      |                 |                 |                 |             |             |-Web Content---23*[{Web Content}]
+        |      |                 |                 |                 |             |             |-Web Content---19*[{Web Content}]
+        |      |                 |                 |                 |             |             |-WebExtensions---23*[{WebExtensio+
+        |      |                 |                 |                 |             |             `-59*[{firefox-esr}]
+        |      |                 |                 |                 |             |-gnome-calculato---3*[{gnome-calculato}]
+        |      |                 |                 |                 |             `-12*[{gnome-shell}]
+        |      |                 |                 |                 |-gnome-software---7*[{gnome-software}]
+        |      |                 |                 |                 |-gsd-a11y-settin---3*[{gsd-a11y-settin}]
+        |      |                 |                 |                 |-gsd-clipboard---2*[{gsd-clipboard}]
+        |      |                 |                 |                 |-gsd-color---3*[{gsd-color}]
+        |      |                 |                 |                 |-gsd-datetime---3*[{gsd-datetime}]
+        |      |                 |                 |                 |-gsd-disk-utilit---2*[{gsd-disk-utilit}]
+        |      |                 |                 |                 |-gsd-housekeepin---3*[{gsd-housekeepin}]
+        |      |                 |                 |                 |-gsd-keyboard---3*[{gsd-keyboard}]
+        |      |                 |                 |                 |-gsd-media-keys---4*[{gsd-media-keys}]
+        |      |                 |                 |                 |-gsd-mouse---3*[{gsd-mouse}]
+        |      |                 |                 |                 |-gsd-power---7*[{gsd-power}]
+        |      |                 |                 |                 |-gsd-print-notif---2*[{gsd-print-notif}]
+        |      |                 |                 |                 |-gsd-rfkill---2*[{gsd-rfkill}]
+        |      |                 |                 |                 |-gsd-screensaver---2*[{gsd-screensaver}]
+        |      |                 |                 |                 |-gsd-sharing---3*[{gsd-sharing}]
+        |      |                 |                 |                 |-gsd-smartcard---4*[{gsd-smartcard}]
+        |      |                 |                 |                 |-gsd-sound---3*[{gsd-sound}]
+        |      |                 |                 |                 |-gsd-wacom---6*[{gsd-wacom}]
+        |      |                 |                 |                 |-gsd-xsettings---7*[{gsd-xsettings}]
+        |      |                 |                 |                 |-tracker-miner-a---4*[{tracker-miner-a}]
+        |      |                 |                 |                 |-tracker-miner-f---5*[{tracker-miner-f}]
+        |      |                 |                 |                 `-3*[{gnome-session-b}]
+        |      |                 |                 `-2*[{gdm-wayland-ses}]
+        |      |                 `-2*[{gdm-session-wor}]
+        |      `-2*[{gdm3}]
+        |-gnome-keyring-d---3*[{gnome-keyring-d}]
+        |-gsd-printer---2*[{gsd-printer}]
+        |-polkitd---2*[{polkitd}]
+        |-rsyslogd---3*[{rsyslogd}]
+        |-rtkit-daemon---2*[{rtkit-daemon}]
+        |-systemd-+-(sd-pam)
+        |         |-at-spi-bus-laun-+-dbus-daemon
+        |         |                 `-3*[{at-spi-bus-laun}]
+        |         |-at-spi2-registr---2*[{at-spi2-registr}]
+        |         |-dbus-daemon
+        |         |-dconf-service---2*[{dconf-service}]
+        |         |-evolution-addre---5*[{evolution-addre}]
+        |         |-evolution-calen---9*[{evolution-calen}]
+        |         |-evolution-sourc---3*[{evolution-sourc}]
+        |         |-gnome-shell-cal---5*[{gnome-shell-cal}]
+        |         |-gnome-terminal--+-8*[bash]
+        |         |                 |-bash---gdb---uninspired
+        |         |                 |-bash---pstree
+        |         |                 `-3*[{gnome-terminal-}]
+        |         |-goa-daemon---3*[{goa-daemon}]
+        |         |-goa-identity-se---3*[{goa-identity-se}]
+        |         |-gvfs-afc-volume---3*[{gvfs-afc-volume}]
+        |         |-gvfs-goa-volume---2*[{gvfs-goa-volume}]
+        |         |-gvfs-gphoto2-vo---2*[{gvfs-gphoto2-vo}]
+        |         |-gvfs-mtp-volume---2*[{gvfs-mtp-volume}]
+        |         |-gvfs-udisks2-vo---2*[{gvfs-udisks2-vo}]
+        |         |-gvfsd-+-gvfsd-burn---2*[{gvfsd-burn}]
+        |         |       |-gvfsd-dnssd---2*[{gvfsd-dnssd}]
+        |         |       |-gvfsd-network---3*[{gvfsd-network}]
+        |         |       |-gvfsd-trash---2*[{gvfsd-trash}]
+        |         |       `-2*[{gvfsd}]
+        |         |-gvfsd-fuse---5*[{gvfsd-fuse}]
+        |         |-gvfsd-metadata---2*[{gvfsd-metadata}]
+        |         |-nautilus---4*[{nautilus}]
+        |         |-pulseaudio---2*[{pulseaudio}]
+        |         `-tracker-store---4*[{tracker-store}]
+        |-systemd-journal
+        |-systemd-logind
+        |-systemd-timesyn---{systemd-timesyn}
+        |-systemd-udevd
+        |-udisksd---4*[{udisksd}]
+        |-unattended-upgr---{unattended-upgr}
+        |-upowerd---2*[{upowerd}]
+        `-wpa_supplicant

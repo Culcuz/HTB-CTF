@@ -1,0 +1,7 @@
+debian@debian:~/letsdefend/permission$ ls -l
+total 0
+-rwxrwxrwx 1 debian debian 0 May  5 01:07 file1
+-rwxrwxrwx 1 debian debian 0 May  5 01:07 file2
+-rwxrwxrwx 1 debian debian 0 May  5 01:07 file3
+-rwxrwxrwx 1 debian debian 0 May  5 01:07 file4
+-rwxrwxrwx 1 debian debian 0 May  5 01:07 file5

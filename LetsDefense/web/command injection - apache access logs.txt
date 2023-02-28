@@ -1,0 +1,11 @@
+
+
+192.168.31.156 - - [01/Mar/2022:09:03:15 -0800] "GET /dvwa/vulnerabilities/exec/ HTTP/1.1" 200 4053 "http://192.168.31.200/dvwa/index.php" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+192.168.31.156 - - [01/Mar/2022:09:03:15 -0800] "GET /dvwa//dvwa/js/add_event_listeners.js HTTP/1.1" 200 593 "http://192.168.31.200/dvwa/vulnerabilities/exec/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+192.168.31.156 - - [01/Mar/2022:09:03:21 -0800] "POST /dvwa/vulnerabilities/exec/?q=1.1.1.1 HTTP/1.1" 200 4477 "http://192.168.31.200/dvwa/vulnerabilities/exec/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+192.168.31.156 - - [01/Mar/2022:09:03:33 -0800] "POST /dvwa/vulnerabilities/exec/?q=1.1.1.1;ls HTTP/1.1" 200 4477 "http://192.168.31.200/dvwa/vulnerabilities/exec/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+192.168.31.156 - - [01/Mar/2022:09:03:50 -0800] "POST /dvwa/vulnerabilities/exec/?q=1.1.1.1;whoami HTTP/1.1" 200 4477 "http://192.168.31.200/dvwa/vulnerabilities/exec/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+192.168.31.156 - - [01/Mar/2022:09:04:00 -0800] "POST /dvwa/vulnerabilities/exec/?q=1.1.1.1;dir HTTP/1.1" 200 4477 "http://192.168.31.200/dvwa/vulnerabilities/exec/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+192.168.31.156 - - [01/Mar/2022:09:04:45 -0800] "POST /dvwa/vulnerabilities/exec/?q=1.1.1.1&&ls HTTP/1.1" 200 4477 "http://192.168.31.200/dvwa/vulnerabilities/exec/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+192.168.31.156 - - [01/Mar/2022:09:04:56 -0800] "POST /dvwa/vulnerabilities/exec/?q=1.1.1.1&&dir HTTP/1.1" 200 4477 "http://192.168.31.200/dvwa/vulnerabilities/exec/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+192.168.31.156 - - [01/Mar/2022:09:05:41 -0800] "POST /dvwa/vulnerabilities/exec/?q=1.1.1.1;pwd HTTP/1.1" 200 4477 "http://192.168.31.200/dvwa/vulnerabilities/exec/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"

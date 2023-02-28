@@ -1,0 +1,9 @@
+PING letsdefend.io (104.21.47.22) 56(84) bytes of data.
+64 bytes from 104.21.47.22 (104.21.47.22): icmp_seq=1 ttl=128 time=16.5 ms
+64 bytes from 104.21.47.22 (104.21.47.22): icmp_seq=2 ttl=128 time=15.3 ms
+64 bytes from 104.21.47.22 (104.21.47.22): icmp_seq=3 ttl=128 time=16.2 ms
+64 bytes from 104.21.47.22 (104.21.47.22): icmp_seq=4 ttl=128 time=16.5 ms
+
+--- letsdefend.io ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 15ms
+rtt min/avg/max/mdev = 15.341/16.116/16.517/0.493 ms

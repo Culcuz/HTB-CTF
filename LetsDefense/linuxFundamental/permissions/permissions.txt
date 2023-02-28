@@ -1,0 +1,18 @@
+debian@debian:~/training/files$ ls -l
+total 0
+-rwx------ 1 debian debian 0 Apr 15 23:37 file1
+-rw-r--r-- 1 debian debian 0 Apr 20 19:15 file10
+-rw-r--r-- 1 debian debian 0 Apr 20 19:15 file11
+-rw-r--r-- 1 debian debian 0 Apr 20 19:15 file12
+-rwx---rwx 1 debian debian 0 Apr 20 19:15 file13
+-rwxr-x--- 1 debian debian 0 Apr 20 19:15 file14
+-rwxr-x--- 1 debian debian 0 Apr 20 19:15 file15
+-rwx-----x 1 debian debian 0 Apr 15 23:37 file2
+-rwxr----x 1 debian debian 0 Apr 15 23:37 file3
+-rwx---r-- 1 debian debian 0 Apr 15 23:37 file4
+-rwx---r-- 1 debian debian 0 Apr 15 23:37 file5
+-rwxrwxrwx 1 debian debian 0 Apr 15 23:37 file6
+-rwxrwxrwx 1 debian debian 0 Apr 15 23:37 file7
+-rwx---rwx 1 debian debian 0 Apr 15 23:37 file8
+-rwxrwxrwx 1 debian debian 0 Apr 20 19:14 file9
+debian@debian:~/training/files$
