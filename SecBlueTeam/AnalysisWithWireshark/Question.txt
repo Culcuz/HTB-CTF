@@ -1,0 +1,32 @@
+PCAP 1
+Which protocol was used over port 3942? -> SSDP
+What is the IP address of the host that was pinged twice?
+How many DNS query response packets were captured?
+What is the IP address of the host which sent the most number of bytes?
+ 
+PCAP 2
+What is the WebAdmin password?
+What is the version number of the attacker’s FTP server? -> 1.5.5
+Which port was used to gain access to the victim Windows host?
+What is the name of a confidential file on the Windows host?
+What is the name of the log file that was created at 4:51 AM on the Windows host?
+
+PCAP 4
+How many UDP packets have been captured? -> 3290
+How many TCP packets have both the SYN and ACK flags set? -> 20
+Which version of Chrome was used to connect to securityblue.team?
+How many packets have a TTL value of 38?
+ 
+
+PCAP 5
+What is the name of the PNG file on the webserver at 192.168.56.111? -> proprietary.png
+Which version of OpenSSH is running on the server? -> 7.9p1
+On which port is the .zip file being served?
+When was a packet with a TCP checksum value of 53203 captured? (Format: xx:xx:xx.xxxxxx)
+ 
+PCAP 3
+What is the MAC address of the attacker? -> 08:00:27:3d:27:5d
+What is the type of attack which is taking place that allows the attacker to listen in on conversations between the central server and another host? -> man in the middle
+What is the file which was downloaded from the central server? -> Alevis_Employee_Information_Chart.csv
+What department does Borden Danilevich work in? -> sales
+What is the SSH password of the Domain Administrator? 
